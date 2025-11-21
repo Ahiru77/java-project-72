@@ -24,21 +24,14 @@ dependencies {
     implementation("io.javalin:javalin:5.6.2")
 }
 
-sonar {
-    properties {
-        property("sonar.projectKey", "Ahiru77_java-project-72")
-        property("sonar.organization", "ahiru77")
-    }
-}
-
 test {
     useJUnitPlatform()
 }
 tasks.jacocoTestReport { reports { xml.required.set(true) } }
 
 sonar {
-  properties {
-    property("sonar.projectKey"), ("Ahiru77_java-project-78")
-    property("sonar.organization"), ("ahiru77")
-  }
+    properties {
+        property("sonar.projectKey", "Ahiru77_java-project-72")
+        property("sonar.organization", "ahiru77")
+    }
 }
