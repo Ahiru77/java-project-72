@@ -2,6 +2,8 @@ plugins {
     id("java")
     id("application")
     id("org.sonarqube") version "7.0.1.6134"
+	jacoco
+	checkstyle	
 }
 
 group = "hexlet.code"
