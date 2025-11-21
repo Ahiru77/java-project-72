@@ -24,10 +24,23 @@ dependencies {
     implementation("io.javalin:javalin:5.6.2")
 }
 
-test {
-    useJUnitPlatform()
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+    }
 }
-tasks.jacocoTestReport { reports { xml.required.set(true) } }
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+        events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
+        // showStackTraces = true
+        // showCauses = true
+        showStandardStreams = true
+    }
+
+}
 
 sonar {
     properties {
