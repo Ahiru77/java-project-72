@@ -38,6 +38,5 @@ sonar {
   properties {
     property "sonar.projectKey", "Ahiru77_java-project-78"
     property "sonar.organization", "ahiru77"
-    property "sonar.host.url", "https://sonarcloud.io"
   }
 }
