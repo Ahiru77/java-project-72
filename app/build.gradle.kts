@@ -1,9 +1,9 @@
 plugins {
-    id("java")
     id("application")
     id("org.sonarqube") version "7.0.1.6134"
 	jacoco
-	checkstyle	
+	checkstyle
+    application
 }
 
 group = "hexlet.code"
@@ -18,29 +18,18 @@ repositories {
  }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("io.javalin:javalin:5.6.2")
 }
 
-tasks.jacocoTestReport {
-    reports {
-        xml.required = true
-    }
-}
-
 tasks.test {
     useJUnitPlatform()
-    testLogging {
-        exceptionFormat = TestExceptionFormat.FULL
-        events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
-        // showStackTraces = true
-        // showCauses = true
-        showStandardStreams = true
-    }
-
 }
+tasks.jacocoTestReport { reports { xml.required.set(true) } }
 
 sonar {
     properties {
