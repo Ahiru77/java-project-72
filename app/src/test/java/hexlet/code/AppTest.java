@@ -19,25 +19,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
-import hexlet.code.App;
-
-import hexlet.code.model.Url;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @Slf4j
 public class AppTest {
     private static MockWebServer mockWebServer;
     private Javalin app;
-    final String FIXTURE = "src/test/resources/fixtures/page_test.html";
+    final String fixture = "src/test/resources/fixtures/page_test.html";
     String mock = "http://localhost:";
 
     public static String readFile(String filePath) throws IOException {
-            return Files.readString(Paths.get(filePath), StandardCharsets.UTF_8);
+        return Files.readString(Paths.get(filePath), StandardCharsets.UTF_8);
     }
 
     @BeforeEach
@@ -45,7 +36,7 @@ public class AppTest {
         app = App.getApp();
         mockWebServer = new MockWebServer();
         MockResponse mockedResponse = new MockResponse()
-                .setBody(readFile(FIXTURE));
+                .setBody(readFile(fixture));
         mockWebServer.enqueue(mockedResponse);
         mockWebServer.start();
     }
