@@ -4,6 +4,8 @@ run:
 	./gradlew run
 lint:
 	./gradlew checkstyleMain
+test:
+	./gradlew test
 build:
 	./gradlew build
 	./gradlew checkstyleMain
