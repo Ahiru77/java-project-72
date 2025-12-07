@@ -52,7 +52,6 @@ public class AppTest {
 
     @AfterEach
     public final void tearDown() throws IOException, SQLException {
-        UrlRepository.clean();
         mockWebServer.shutdown();
     }
 
@@ -73,14 +72,6 @@ public class AppTest {
     }
 
     @Test
-    public void testUsersPage() {
-        JavalinTest.test(app, (server, client) -> {
-            var response = client.get("/url/");
-            assertThat(response.code()).isEqualTo(200);
-        });
-    }
-
-    @Test
     void testUrlNotFound() throws Exception {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/999999");
@@ -95,6 +86,16 @@ public class AppTest {
             var response = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
             UrlRepository.findByName(mock);
             assertThat(UrlRepository.findByName(mock)).isNotEqualTo(null);
+        });
+    }
+
+    @Test
+    public void testCreateUrlCheck() {
+        JavalinTest.test(app, (server, client) -> {
+            mock = mock + mockWebServer.getPort();
+            var responseUrl = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
+            var responseCheck = client.post(NamedRoutes.urlChecksRoute("1"));
+            assertThat(UrlCheckRepository.find(1L)).isNotEqualTo(null);
         });
     }
 

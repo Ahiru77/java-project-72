@@ -83,11 +83,4 @@ public class UrlRepository extends BaseRepository {
             return result;
         }
     }
-
-    public static void clean() throws SQLException {
-        String sql = "DELETE * FROM urls";
-        var con = dataSource.getConnection();
-        var stmt = con.prepareStatement(sql);
-        stmt.executeUpdate();
-    }
 }
