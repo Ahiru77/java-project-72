@@ -17,15 +17,15 @@ import org.jsoup.select.Elements;
 
 @Slf4j
 public class UrlCheckController {
-    public static void createCheck(Context ctx) throws UnirestException, SQLException {
+    public static void createCheck(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity (id " + id + ") not found"));
         var urlName = url.getName();
-
-        HttpResponse<String> response = Unirest.get(urlName).asString();
-        String htmlBody = response.getBody();
-        Document doc = Jsoup.parse(htmlBody);
+        try {
+            HttpResponse<String> response = Unirest.get(urlName).asString();
+            String htmlBody = response.getBody();
+            Document doc = Jsoup.parse(htmlBody);
 
         long statusCode = response.getStatus();
         log.info("Status code: " + statusCode);
@@ -42,6 +42,9 @@ public class UrlCheckController {
 
         var urlCheck = new UrlCheck(statusCode, title, description, h1, id);
         UrlCheckRepository.save(urlCheck);
+        } catch (UnirestException e) {
+            log.info("Failed");
+        }
         ctx.sessionAttribute("flash", "Страница успешно проверена");
         ctx.sessionAttribute("flash-type", "success");
         ctx.redirect(NamedRoutes.urlRoute(id));

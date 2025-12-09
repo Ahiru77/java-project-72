@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import hexlet.code.dto.BasePage;
@@ -28,7 +29,7 @@ public class UrlController {
     }
 
     public static void urlsIndex(Context ctx) throws SQLException {
-        ArrayList<Url> urlList = UrlRepository.getEntities();
+        var urlList = UrlRepository.getEntities();
         var latestChecks = UrlCheckRepository.findLatestCheck();
         for (Url url : urlList) {
             var id = url.getId();
@@ -66,7 +67,6 @@ public class UrlController {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.sessionAttribute("flash-type", "alert");
             log.info("Exception: {}", e.getMessage());
-            e.printStackTrace();
         }
         String protocol = urlObj.getProtocol();
         String host = urlObj.getHost();

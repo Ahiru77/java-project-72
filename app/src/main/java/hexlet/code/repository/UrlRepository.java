@@ -4,6 +4,7 @@ import hexlet.code.model.Url;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,7 +66,7 @@ public class UrlRepository extends BaseRepository {
         }
     }
 
-    public static ArrayList<Url> getEntities() throws SQLException {
+    public static List<Url> getEntities() throws SQLException {
         var sql = "SELECT * FROM urls";
         var result = new ArrayList<Url>();
         try (var conn = dataSource.getConnection();
