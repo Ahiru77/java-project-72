@@ -109,9 +109,9 @@ public class AppTest {
             var url = UrlRepository.findByName(mock);
             var lastChecks = UrlCheckRepository.findLatestCheck();
             var urlCheck = lastChecks.get(url.get().getId());
-            assertThat(urlCheck.getTitle().contains("Fixture thing"));
-            assertThat(urlCheck.getH1().contains("Awesome fixture"));
-            assertThat(urlCheck.getDescription().contains("Pretty description."));
+            assertThat(urlCheck.getTitle()).isEqualTo("Fixture thing");
+            assertThat(urlCheck.getH1()).isEqualTo("Awesome fixture");
+            assertThat(urlCheck.getDescription()).isEqualTo("Pretty description.");
         });
     }
 }
