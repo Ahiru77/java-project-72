@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import hexlet.code.controller.UrlCheckController;
 import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
@@ -42,7 +43,7 @@ public class AppTest {
     }
 
     @AfterEach
-    public final void tearDown() throws IOException, SQLException {
+    public final void tearDown() throws IOException {
         mockWebServer.shutdown();
     }
 
@@ -63,7 +64,7 @@ public class AppTest {
     }
 
     @Test
-    void testUrlNotFound() throws Exception {
+    void testUrlNotFound() {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/999999");
             assertThat(response.code()).isEqualTo(404);
@@ -97,6 +98,21 @@ public class AppTest {
             var response = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
             var responseShow = client.get("/urls/1");
             assertThat(responseShow.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    public void testCheckUrlInfo() {
+        JavalinTest.test(app, (server, client) -> {
+            mock = mock + mockWebServer.getPort();
+            var response = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
+            var responseCheck = client.post(NamedRoutes.urlChecksRoute("1"));
+            var url = UrlRepository.findByName(mock);
+            var lastChecks = UrlCheckRepository.findLatestCheck();
+            var urlCheck = lastChecks.get(url.get().getId());
+            assertThat(urlCheck.getTitle().contains("Fixture thing"));
+            assertThat(urlCheck.getH1().contains("Awesome fixture"));
+            assertThat(urlCheck.getDescription().contains("Pretty description."));
         });
     }
 }
