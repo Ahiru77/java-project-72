@@ -40,9 +40,8 @@ public class App {
     }
 
     public static Javalin getApp() throws IOException, SQLException {
-//        var dbVar = System.getenv().getOrDefault("JDBC_DATABASE_URL",
-//                "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
-        String dbVar = System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+        var dbVar = System.getenv().getOrDefault("JDBC_DATABASE_URL",
+                "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
 
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(dbVar);
@@ -62,9 +61,9 @@ public class App {
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-//      app.before(ctx -> {
-//          ctx.contentType("text/html; charset=utf-8");
-//      });
+        app.before(ctx -> {
+            ctx.contentType("text/html; charset=utf-8");
+        });
 
         app.get(NamedRoutes.mainPageRoute(), UrlController::build);
         app.post(NamedRoutes.urlsRoute(), UrlController::create);
