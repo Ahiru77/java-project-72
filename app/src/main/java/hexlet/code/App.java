@@ -41,7 +41,7 @@ public class App {
 
     public static Javalin getApp() throws IOException, SQLException {
         var dbVar = System.getenv().getOrDefault("JDBC_DATABASE_URL",
-                "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+                "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;");
 
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(dbVar);
