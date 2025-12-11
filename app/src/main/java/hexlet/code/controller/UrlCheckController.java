@@ -43,6 +43,8 @@ public class UrlCheckController {
             var urlCheck = new UrlCheck(statusCode, title, description, h1, id);
             UrlCheckRepository.save(urlCheck);
         } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", e.getMessage());
+            ctx.sessionAttribute("flash-type", "alert");
             log.info("Failed");
         }
         ctx.sessionAttribute("flash", "Страница успешно проверена");

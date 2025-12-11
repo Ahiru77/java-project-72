@@ -85,7 +85,9 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             mock = mock + mockWebServer.getPort();
             var responseUrl = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
-            var responseCheck = client.post(NamedRoutes.urlChecksRoute("1"));
+            var url = UrlRepository.findByName(mock);
+            var id =  String.valueOf(url.get().getId());
+            var responseCheck = client.post(NamedRoutes.urlChecksRoute(id));
             assertThat(UrlCheckRepository.find(1L)).isNotEqualTo(null);
         });
     }
