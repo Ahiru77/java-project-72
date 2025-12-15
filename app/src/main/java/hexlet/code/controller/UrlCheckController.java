@@ -24,8 +24,7 @@ public class UrlCheckController {
         var urlName = url.getName();
         try {
             HttpResponse<String> response = Unirest.get(urlName).asString();
-            String htmlBody = response.getBody();
-            Document doc = Jsoup.parse(htmlBody);
+            Document doc = Jsoup.parse(response.getBody());
 
             long statusCode = response.getStatus();
             log.info("Status code: " + statusCode);
@@ -42,13 +41,17 @@ public class UrlCheckController {
 
             var urlCheck = new UrlCheck(statusCode, title, description, h1, id);
             UrlCheckRepository.save(urlCheck);
+
+            ctx.sessionAttribute("flash", "Страница успешно проверена");
+            ctx.sessionAttribute("flash-type", "success");
         } catch (UnirestException e) {
+            ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flash-type", "danger");
+            ctx.redirect(NamedRoutes.urlRoute(id));
+        } catch (Exception e) {
             ctx.sessionAttribute("flash", e.getMessage());
-            ctx.sessionAttribute("flash-type", "alert");
-            log.info("Failed");
+            ctx.sessionAttribute("flash-type", "danger");
+            ctx.redirect(NamedRoutes.urlRoute(id));
         }
-        ctx.sessionAttribute("flash", "Страница успешно проверена");
-        ctx.sessionAttribute("flash-type", "success");
-        ctx.redirect(NamedRoutes.urlRoute(id));
     }
 }
