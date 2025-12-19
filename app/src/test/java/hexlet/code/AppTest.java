@@ -86,9 +86,9 @@ public class AppTest {
             mock = mock + mockWebServer.getPort();
             var responseUrl = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
             var url = UrlRepository.findByName(mock);
-            var id =  String.valueOf(url.get().getId());
-            var responseCheck = client.post(NamedRoutes.urlChecksRoute(id));
-            assertThat(UrlCheckRepository.find(1L)).isNotEqualTo(null);
+            var id =  url.get().getId();
+            var responseCheck = client.post(NamedRoutes.urlChecksRoute(String.valueOf(id)));
+            assertThat(UrlCheckRepository.find(id)).isNotEqualTo(null);
         });
     }
 
@@ -97,7 +97,9 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             mock = mock + mockWebServer.getPort();
             var response = client.post(NamedRoutes.urlsRoute(), "url=" + mock);
-            var responseShow = client.get("/urls/1");
+            var url = UrlRepository.findByName(mock);
+            var id =  url.get().getId();
+            var responseShow = client.get("/urls/" + id);
             assertThat(responseShow.code()).isEqualTo(200);
         });
     }
